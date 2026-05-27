@@ -1,0 +1,12 @@
+{
+  "python.analysis.extraPaths": [
+    "/home/vscode/.local/lib/python3.14/site-packages"
+  ],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "ms-python.python",
+  "jupyter.jupyterCommandLineArguments": [
+    "--NotebookApp.port=3941 --notebook-dir=/tmp"
+  ],
+  "python.analysis.typeCheckingMode": "off",
+  "explorer.excludeGitIgnore": false,
+}
