@@ -44,6 +44,10 @@ body = body - cup_cutout
 
 # %%
 
+show(body)
+
+# %%
+
 exporter = Mesher()
 exporter.add_shape(body)
 exporter.add_code_to_metadata()
