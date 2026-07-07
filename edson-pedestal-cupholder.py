@@ -9,48 +9,76 @@
 
 from build123d import *
 from ocp_vscode import *
-from build123d.topology import Shape
-
-
-def vector_to(a: Shape, b: Shape):
-    pt_a, pt_b = a.closest_points(b)
-    return pt_b - pt_a
-
 
 # %%
 
-cupholder_body = {
-    "outer_diameter": 4.5 * IN,
-    "inner_diameter": 3.5 * IN,
-    "height": 5 * IN,
-    "handle_width": 0.5 * IN
-}
+cupholder_od = 4.5 * IN
+cupholder_id = 3.5 * IN
+cupholder_height = 5 * IN
+cup_handle_width = 0.5 * IN
 
-radio_clip = {
-    "large_diameter": 0.625 * IN,
-    "small_diameter": 0.325 * IN,
-    "large_depth": 0.125 * IN,
-    "small_depth": (0.275 - 0.125) * IN
-}
+radio_clip_large_diameter = 0.625 * IN
+radio_clip_small_diameter = 0.325 * IN
+radio_clip_large_depth = 0.125 * IN
+radio_clip_small_depth = (0.275 - 0.125) * IN
+radio_clip_cut_depth = 1 * IN
 
-# %%
+# %% utils
 
-cupholder_wall_thickness = (cupholder_body["outer_diameter"] - cupholder_body["inner_diameter"]) / 2
+align_min_z = (Align.CENTER, Align.CENTER, Align.MIN)
+align_max_z = (Align.CENTER, Align.CENTER, Align.MAX)
 
-body = Cylinder(radius=cupholder_body["outer_diameter"] / 2, height=cupholder_body["height"])
-cup_cutout = Cylinder(radius=cupholder_body["inner_diameter"] / 2, height=cupholder_body["height"] - cupholder_wall_thickness)
+# %% main cupholder body
 
-body = body - cup_cutout
+cupholder_wall_thickness = (cupholder_od - cupholder_id) / 2
 
-# %%
+body = Cylinder(
+  radius=cupholder_od / 2,
+  height=cupholder_height,
+  align=align_min_z
+)
+top_face = body.faces().sort_by(Axis.Z)[-1]
+
+cup_cutout_body = Cylinder(
+  radius=cupholder_id / 2,
+  height=cupholder_height - cupholder_wall_thickness,
+  align=align_max_z
+)
+
+body = body - (top_face.center_location * cup_cutout_body)
+
+# %% radio clip cutout
+
+outer_tangent_xz_plane = Plane(
+  origin=(0, cupholder_od / 2, cupholder_height - radio_clip_cut_depth),
+  z_dir=(0, -1, 0)
+)
+clip_inner_cutout = outer_tangent_xz_plane * Cylinder(
+  radius=radio_clip_small_diameter / 2,
+  height=cupholder_wall_thickness,
+  align=align_min_z
+)
+clip_outer_cutout = outer_tangent_xz_plane.offset(radio_clip_large_depth) * Cylinder(
+  radius=radio_clip_large_diameter / 2,
+  height=cupholder_wall_thickness,
+  align=align_min_z
+)
+clip_cutout_body = clip_inner_cutout + clip_outer_cutout
+
+clip_cross_section = section(clip_cutout_body, Pos(outer_tangent_xz_plane.origin) * Plane.XY)
+clip_cutout_body += extrude(clip_cross_section, amount = radio_clip_cut_depth)
+
+body -= clip_cutout_body
+
+# %% draw
 
 show(body)
 
 # %%
 
-exporter = Mesher()
-exporter.add_shape(body)
-exporter.add_code_to_metadata()
-exporter.write("heater_intake_vent.3mf")
+# exporter = Mesher()
+# exporter.add_shape(body)
+# exporter.add_code_to_metadata()
+# exporter.write("cupholder.3mf")
 
 # %%
