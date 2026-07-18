@@ -9,4 +9,5 @@
   ],
   "python.analysis.typeCheckingMode": "off",
   "explorer.excludeGitIgnore": false,
+  "python-envs.defaultEnvManager": "ms-python.python:system",
 }
