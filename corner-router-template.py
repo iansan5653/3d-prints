@@ -26,6 +26,10 @@ corner_edge = corner_edges.sort_by(Axis.Y).sort_by(Axis.X)[-1]
 
 body = fillet(corner_edge, radius=corner_radius)
 
+back_corner_edge = body.edges().filter_by(
+    Axis.Z).sort_by(-Axis.Y).sort_by(-Axis.X)[-1]
+body = fillet(back_corner_edge, radius=1.5 * IN)
+
 # %% alignment guides
 
 alignment_setback = 1 * IN
@@ -47,23 +51,25 @@ body += y_guide + x_guide
 
 half_board_width = board_width/2
 cutout = top_plane * offset(Rectangle(board_width, board_width), -3/4 * IN)
-brace = top_plane * make_face(offset(Line((-half_board_width, -half_board_width), (half_board_width, half_board_width)), 1/4 * IN))
+brace = top_plane * make_face(offset(Line((-half_board_width, -
+                              half_board_width), (half_board_width, half_board_width)), 1/4 * IN))
 cutout -= brace
 
 body_before_cutout = body
 body -= extrude(cutout, -thickness)
 
-body = fillet(new_edges(body_before_cutout, combined=body) | Axis.Z, radius=1/4 * IN)
+body = fillet(new_edges(body_before_cutout, combined=body)
+              | Axis.Z, radius=1/4 * IN)
 
 # %% show
 
-show(body)
+show(body, back_corner_edge)
 
 # %% export
 
-exporter = Mesher()
-exporter.add_shape(body)
-exporter.add_code_to_metadata()
-exporter.write("corner-router-template.3mf")
+# exporter = Mesher()
+# exporter.add_shape(body)
+# exporter.add_code_to_metadata()
+# exporter.write("corner-router-template.3mf")
 
 # %%
