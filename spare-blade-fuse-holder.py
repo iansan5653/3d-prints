@@ -50,7 +50,7 @@ body = Pos(0, -fuse_block_length / 2, fuse_holder_height) * body
 
 # %% mounting points
 
-bracket_height = fuse_holder_height / 3
+bracket_height = fuse_holder_height / 2
 bracket_length = fastener_csk_diameter * 1.5
 mounting_bracket = Box(length=fuse_holder_width, width=bracket_length,
                        height=bracket_height, align=(Align.CENTER, Align.CENTER, Align.MAX))
