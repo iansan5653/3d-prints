@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# Regenerate export files for any staged model scripts and stage the results.
+#
+# A "model script" is a root-level *.py file that calls show_or_export
+# (everything except utils.py). For each staged model, this runs the script to
+# regenerate output/<model-name>/<model-name>.{3mf,stl,svg} and stages it.
+
+set -euo pipefail
+
+# Staged, added/copied/modified Python files at the repo root.
+staged=$(git diff --cached --name-only --diff-filter=ACM -- '*.py')
+
+[ -z "$staged" ] && exit 0
+
+while IFS= read -r file; do
+    # Only root-level scripts, and never the shared utility.
+    case "$file" in
+        */*) continue ;;
+        utils.py) continue ;;
+    esac
+
+    # Only files that actually produce output.
+    grep -q "show_or_export" "$file" || continue
+
+    name=${file%.py}
+    echo "pre-commit: regenerating outputs for $file"
+    python3 "$file"
+    git add "output/$name"
+done <<< "$staged"
+
+exit 0
