@@ -38,7 +38,7 @@ Template for routing a half-circle in the end of a plank. I used this for making
 
 ### edson-pedestal-cupholder
 
-WIP: cupholder to replace instrument pod on old Edson sailboat helm pedestals. Designed to fit large water bottles and coffee mugs with handles, and includes a place to clip on a handheld VHF radio. Printed in PETG.
+**Early draft - dimensions are approximate**: cupholder to replace instrument pod on old Edson sailboat helm pedestals. Designed to fit large water bottles and coffee mugs with handles, and includes a place to clip on a handheld VHF radio. Printed in PETG.
 
 [![edson-pedestal-cupholder preview](output/edson-pedestal-cupholder/edson-pedestal-cupholder.svg)](output/edson-pedestal-cupholder/edson-pedestal-cupholder.svg)
 
