@@ -4,6 +4,7 @@
 
 from build123d import *
 from ocp_vscode import *
+from utils import show_or_export
 
 # %% parameters
 
@@ -46,7 +47,8 @@ guides = guide + guide.mirror(Plane.YZ)
 
 body += guides
 
-# %% show
+# %% show/export
 
-show(body)
+show_or_export(body)
+
 # %%

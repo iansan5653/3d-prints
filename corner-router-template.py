@@ -5,6 +5,7 @@
 
 from build123d import *
 from ocp_vscode import *
+from utils import show_or_export
 
 # %% parameters
 
@@ -61,15 +62,8 @@ body -= extrude(cutout, -thickness)
 body = fillet(new_edges(body_before_cutout, combined=body)
               | Axis.Z, radius=1/4 * IN)
 
-# %% show
+# %% show/export
 
-show(body, back_corner_edge)
-
-# %% export
-
-# exporter = Mesher()
-# exporter.add_shape(body)
-# exporter.add_code_to_metadata()
-# exporter.write("corner-router-template.3mf")
+show_or_export(body)
 
 # %%

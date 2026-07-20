@@ -4,6 +4,7 @@
 
 from build123d import *
 from ocp_vscode import *
+from utils import show_or_export
 
 # %% parameters
 
@@ -15,15 +16,8 @@ c = 3 * IN
 
 body = Box(length=a, width=b, height=c)
 
-# %% show
+# %% show/export
 
-show(body)
-
-# %% export
-
-# exporter = Mesher()
-# exporter.add_shape(body)
-# exporter.add_code_to_metadata()
-# exporter.write("example.3mf")
+show_or_export(body)
 
 # %%

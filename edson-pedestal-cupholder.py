@@ -9,6 +9,7 @@
 
 from build123d import *
 from ocp_vscode import *
+from utils import show_or_export
 
 # %%
 
@@ -142,15 +143,8 @@ slot_boxes = [Rot(0, 0, (360 / slot_count) * i)
 
 body -= slot_boxes
 
-# %% draw
+# %% show/export
 
-show(body)
-
-# %%
-
-# exporter = Mesher()
-# exporter.add_shape(body)
-# exporter.add_code_to_metadata()
-# exporter.write("cupholder.3mf")
+show_or_export(body)
 
 # %%

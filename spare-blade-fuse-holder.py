@@ -4,6 +4,7 @@
 
 from build123d import *
 from ocp_vscode import *
+from utils import show_or_export
 
 # %% parameters
 
@@ -73,15 +74,8 @@ vertical_edges = body.edges().filter_by(lambda edge: abs(
 
 body = fillet(vertical_edges, radius=0.125 * IN)
 
-# %% show
+# %% show/export
 
-show(body, vertical_edges)
-
-# %% export
-
-# exporter = Mesher()
-# exporter.add_shape(body)
-# exporter.add_code_to_metadata()
-# exporter.write("example.3mf")
+show_or_export(body)
 
 # %%
