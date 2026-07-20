@@ -3,7 +3,8 @@
 # When a script is run interactively (VS Code interactive window / Jupyter
 # notebook) the passed parts are shown with ocp_vscode. When the same script is
 # run from the command line the parts are exported to `.3mf`, `.stl` and `.svg`
-# files whose names are inferred from the source file name.
+# files under `output/<model-name>/`, where the model name is inferred from the
+# source file name.
 
 import sys
 from pathlib import Path
@@ -24,8 +25,9 @@ def is_notebook() -> bool:
 def show_or_export(*parts) -> None:
     """Show the parts in a notebook, or export them on the CLI.
 
-    On the command line the parts are written to `.3mf`, `.stl` and `.svg`
-    files whose base name is inferred from the running script's file name.
+    On the command line the parts are written to
+    `output/<model-name>/<model-name>.{3mf,stl,svg}`, where the model name is
+    inferred from the running script's file name.
     """
     if not parts:
         raise ValueError("show_or_export requires at least one part")
@@ -34,7 +36,10 @@ def show_or_export(*parts) -> None:
         show(*parts)
         return
 
-    base_path = Path(sys.argv[0]).with_suffix("")
+    model_name = Path(sys.argv[0]).stem
+    output_dir = Path(__file__).resolve().parent / "output" / model_name
+    output_dir.mkdir(parents=True, exist_ok=True)
+    base_path = output_dir / model_name
     combined = parts[0] if len(parts) == 1 else Compound(children=list(parts))
 
     mesher = Mesher()
