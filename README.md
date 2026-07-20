@@ -10,6 +10,14 @@ The easiest way to run this is by creating a Codespace or devcontainer in this r
 
 ## Parts
 
+### spare-blade-fuse-holder
+
+Holder for six (or more, by changing file parameters) ATC blade fuses. Great for storing extra fuses right next to the corresponding panel on a boat or car. Securely grips fuses so they won't fall out. Designed to be fastened with two #8 screws. I recommend printing this one out of PETG for heat resistance.
+
+[![spare-blade-fuse-holder preview](output/spare-blade-fuse-holder/spare-blade-fuse-holder.svg)](output/spare-blade-fuse-holder/spare-blade-fuse-holder.svg)
+
+[Source](spare-blade-fuse-holder.py) · [3MF](output/spare-blade-fuse-holder/spare-blade-fuse-holder.3mf) · [STL](output/spare-blade-fuse-holder/spare-blade-fuse-holder.stl) · [SVG](output/spare-blade-fuse-holder/spare-blade-fuse-holder.svg)
+
 ### corner-router-template
 
 Template for routing rounded corners using a top-bearing straight bit on a fixed base router. Extra surface area included to allow room for clamping even with full-size router bases. Long alignment guides to jump over any existing cuts. 
@@ -27,14 +35,6 @@ Template for routing a half-circle in the end of a plank. I used this for making
 [![half-circle-router-template preview](output/half-circle-router-template/half-circle-router-template.svg)](output/half-circle-router-template/half-circle-router-template.svg)
 
 [Source](half-circle-router-template.py) · [3MF](output/half-circle-router-template/half-circle-router-template.3mf) · [STL](output/half-circle-router-template/half-circle-router-template.stl) · [SVG](output/half-circle-router-template/half-circle-router-template.svg)
-
-### spare-blade-fuse-holder
-
-Holder for six (or more, by changing file parameters) ATC blade fuses. Great for storing extra fuses right next to the corresponding panel on a boat or car. Securely grips fuses so they won't fall out. Designed to be fastened with two #8 screws. I recommend printing this one out of PETG for heat resistance.
-
-[![spare-blade-fuse-holder preview](output/spare-blade-fuse-holder/spare-blade-fuse-holder.svg)](output/spare-blade-fuse-holder/spare-blade-fuse-holder.svg)
-
-[Source](spare-blade-fuse-holder.py) · [3MF](output/spare-blade-fuse-holder/spare-blade-fuse-holder.3mf) · [STL](output/spare-blade-fuse-holder/spare-blade-fuse-holder.stl) · [SVG](output/spare-blade-fuse-holder/spare-blade-fuse-holder.svg)
 
 ### edson-pedestal-cupholder
 
