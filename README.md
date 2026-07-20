@@ -12,7 +12,7 @@ The easiest way to run this is by creating a Codespace or devcontainer in this r
 
 ### spare-blade-fuse-holder
 
-Holder for six (or more, by changing file parameters) ATC blade fuses. Great for storing extra fuses right next to the corresponding panel on a boat or car. Securely grips fuses so they won't fall out. Designed to be fastened with two #8 screws. I recommend printing this one out of PETG for heat resistance.
+Holder for six (or more, by changing file parameters) ATC blade fuses. Great for storing extra fuses right next to the corresponding panel on a boat or car. Securely grips fuses so they won't fall out. Designed to be fastened with two #8 screws. I print this one out of PETG for heat resistance.
 
 [![spare-blade-fuse-holder preview](output/spare-blade-fuse-holder/spare-blade-fuse-holder.svg)](output/spare-blade-fuse-holder/spare-blade-fuse-holder.svg)
 
