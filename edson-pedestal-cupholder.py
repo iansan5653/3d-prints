@@ -7,16 +7,18 @@
 
 # %%
 
+from math import cos, radians, sin
+
 from build123d import *
 from ocp_vscode import *
 from utils import show_or_export
 
 # %%
 
-cupholder_od = 4.5 * IN
-cupholder_id = 4 * IN
-cupholder_height = 4.5 * IN
-cup_handle_width = 0.5 * IN
+cupholder_od = 4 * IN
+cupholder_id = 3.5 * IN
+cupholder_height = 3.5 * IN
+cup_handle_width = 0.625 * IN
 
 cupholder_wall_thickness = (cupholder_od - cupholder_id) / 2
 cupholder_floor_thickness = cupholder_wall_thickness * 2
@@ -25,7 +27,7 @@ radio_clip_large_diameter = 0.625 * IN
 radio_clip_small_diameter = 0.325 * IN
 radio_clip_large_depth = 0.125 * IN
 radio_clip_small_depth = (0.275 - 0.125) * IN
-radio_clip_cut_depth = (3/4) * IN
+radio_clip_cut_depth = (1/2) * IN
 
 center_fastener_diameter = 5/16 * IN
 center_fastener_cbr_diameter = 3/4 * IN
@@ -35,8 +37,8 @@ offset_fastener_diameter = 3/16 * IN
 offset_fastener_cbr_diameter = 5/16 * IN
 offset_fastener_cbr_depth = 3/16 * IN
 
-slot_count = 10
-slot_height = cupholder_height - 1.5 * IN
+slot_count = 8
+slot_height = cupholder_height - 2 * IN
 slot_width = cup_handle_width
 
 # %% utils
@@ -67,16 +69,21 @@ body = fillet(bottom_inside_face.edges(), (1/8) * IN)
 
 # %% radio clip cutout
 
-outer_tangent_xz_plane = Plane(
-    origin=(0, cupholder_od / 2, cupholder_height - radio_clip_cut_depth),
-    z_dir=(0, -1, 0)
+clip_cutout_angle = radians(1/16 * 360)
+clip_cutout_plane = Plane(
+    origin=(
+        -cupholder_od / 2 * sin(clip_cutout_angle),
+        cupholder_od / 2 * cos(clip_cutout_angle),
+        cupholder_height - radio_clip_cut_depth
+    ),
+    z_dir=(sin(clip_cutout_angle), -cos(clip_cutout_angle), 0)
 )
-clip_inner_cutout = outer_tangent_xz_plane * Cylinder(
+clip_inner_cutout = clip_cutout_plane * Cylinder(
     radius=radio_clip_small_diameter / 2,
     height=cupholder_wall_thickness,
     align=align_min_z
 )
-clip_outer_cutout = outer_tangent_xz_plane.offset(radio_clip_large_depth) * Cylinder(
+clip_outer_cutout = clip_cutout_plane.offset(radio_clip_large_depth) * Cylinder(
     radius=radio_clip_large_diameter / 2,
     height=cupholder_wall_thickness,
     align=align_min_z
@@ -84,7 +91,7 @@ clip_outer_cutout = outer_tangent_xz_plane.offset(radio_clip_large_depth) * Cyli
 clip_cutout_body = clip_inner_cutout + clip_outer_cutout
 
 clip_cross_section = section(clip_cutout_body, Pos(
-    outer_tangent_xz_plane.origin) * Plane.XY)
+    clip_cutout_plane.origin) * Plane.XY)
 clip_cutout_body += extrude(clip_cross_section, amount=radio_clip_cut_depth)
 
 body_without_cutout = body
@@ -92,7 +99,7 @@ body -= clip_cutout_body
 
 top_face = body.faces().sort_by(Axis.Z)[-1]
 cutout_fillet_edges = new_edges(body_without_cutout, combined=body) & top_face.edges(
-) | outer_tangent_xz_plane.location.z_axis
+) | clip_cutout_plane.location.z_axis
 
 body = fillet(cutout_fillet_edges, (1/8) * IN)
 
@@ -142,6 +149,10 @@ slot_boxes = [Rot(0, 0, (360 / slot_count) * i)
               for i in range(1, slot_count)] * single_slot_box
 
 body -= slot_boxes
+
+# %% aesthetic cutout
+
+
 
 # %% show/export
 
