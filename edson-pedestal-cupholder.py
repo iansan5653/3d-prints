@@ -7,7 +7,7 @@
 
 # %%
 
-from math import cos, radians, sin
+from math import cos, isclose, radians, sin
 
 from build123d import *
 from ocp_vscode import *
@@ -38,8 +38,11 @@ offset_fastener_cbr_diameter = 5/16 * IN
 offset_fastener_cbr_depth = 3/16 * IN
 
 slot_count = 8
-slot_height = cupholder_height - 2 * IN
+slot_height = cupholder_height - 1 * IN
 slot_width = cup_handle_width
+
+groove_height = (1/16) * IN
+groove_opening_clearance = (1/4) * IN
 
 # %% utils
 
@@ -152,7 +155,56 @@ body -= slot_boxes
 
 # %% aesthetic cutout
 
+## Creates a torus around the exterior of the cup, stopping at an offset from each edge in the way
+def groove_cutter(body, z, end_clearance=0):
+    cross_section = section(body, Plane(origin=(0, 0, z)))
+    circular_edges = cross_section.edges().filter_by(GeomType.CIRCLE)
+    outer_radius = max(edge.radius for edge in circular_edges)
+    outer_arcs = [
+        edge for edge in circular_edges
+        if isclose(edge.radius, outer_radius)
+    ]
 
+    if not end_clearance:
+        return Pos(0, 0, z) * Torus(outer_radius, groove_height / 2)
+
+    groove_segments = []
+    for outer_arc in outer_arcs:
+        if outer_arc.length <= 2 * end_clearance:
+            raise ValueError("Groove arc is too short for the end clearance")
+
+        groove_path = outer_arc.trim(
+            end_clearance / outer_arc.length,
+            1 - end_clearance / outer_arc.length
+        )
+        profile_plane = Plane(
+            origin=groove_path @ 0,
+            z_dir=groove_path % 0
+        )
+        groove_segment = sweep(
+            profile_plane * Circle(groove_height / 2),
+            groove_path,
+            is_frenet=True
+        )
+        groove_segments.append(
+            groove_segment
+            # round the ends:
+            + Pos(groove_path @ 0) * Sphere(groove_height / 2)
+            + Pos(groove_path @ 1) * Sphere(groove_height / 2)
+        )
+
+    return Compound(children=groove_segments)
+
+
+body_bounds = body.bounding_box()
+slot_bounds = single_slot_box.bounding_box()
+groove_offset = (slot_bounds.min.Z - body_bounds.min.Z) / 2
+
+bottom_groove_z = body_bounds.min.Z + groove_offset
+top_groove_z = body_bounds.max.Z - groove_offset
+
+body -= groove_cutter(body, bottom_groove_z)
+body -= groove_cutter(body, top_groove_z, groove_opening_clearance)
 
 # %% show/export
 
