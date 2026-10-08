@@ -43,6 +43,7 @@ slot_width = cup_handle_width
 
 groove_height = (1/16) * IN
 groove_opening_clearance = (1/4) * IN
+outer_edge_fillet_radius = (1/32) * IN
 
 # %% utils
 
@@ -152,6 +153,13 @@ slot_boxes = [Rot(0, 0, (360 / slot_count) * i)
               for i in range(1, slot_count)] * single_slot_box
 
 body -= slot_boxes
+
+# %% outer edge fillets
+
+outer_face = body.faces().filter_by(
+    GeomType.CYLINDER).sort_by(SortBy.RADIUS)[-1]
+outer_fillet_edges = outer_face.edges().sort_by(Axis.Z)[1:]
+body = fillet(outer_fillet_edges, outer_edge_fillet_radius)
 
 # %% aesthetic cutout
 
