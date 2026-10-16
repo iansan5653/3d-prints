@@ -29,13 +29,13 @@ radio_clip_large_depth = 0.125 * IN
 radio_clip_small_depth = (0.275 - 0.125) * IN
 radio_clip_cut_depth = (1/2) * IN
 
-center_fastener_diameter = 5/16 * IN
-center_fastener_cbr_diameter = 3/4 * IN
+center_fastener_diameter = 3/8 * IN
+center_fastener_cbr_diameter = 7/8 * IN
 center_fastener_cbr_depth = 1/4 * IN
 
-offset_fastener_diameter = 3/16 * IN
-offset_fastener_cbr_diameter = 5/16 * IN
-offset_fastener_cbr_depth = 3/16 * IN
+offset_fastener_diameter = 1/4 * IN
+offset_fastener_cbr_diameter = 1/2 * IN
+offset_fastener_cbr_depth = 1/4 * IN
 
 slot_count = 8
 slot_height = cupholder_height - 1 * IN
